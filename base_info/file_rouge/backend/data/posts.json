@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "author": "Amine Benali",
+        "role": "Développeur web junior",
+        "content": "Je découvre les API PHP et je viens de terminer mon premier exercice de gestion de données JSON.",
+        "createdAt": "2026-11-12T09:30:00+00:00"
+    },
+    {
+        "id": 2,
+        "author": "Sara El Mansouri",
+        "role": "Étudiante en développement",
+        "content": "Cette semaine, je travaille sur les opérations CRUD : créer, lire, modifier et supprimer des publications.",
+        "createdAt": "2026-11-12T08:15:00+00:00"
+    },
+    {
+        "id": 3,
+        "author": "Youssef Karim",
+        "role": "Formateur numérique",
+        "content": "Un petit projet bien découpé est une bonne manière d'apprendre comment le navigateur communique avec PHP.",
+        "createdAt": "2026-11-11T16:45:00+00:00"
+    }
+]
