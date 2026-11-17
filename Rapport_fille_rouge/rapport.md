@@ -11,7 +11,7 @@
 <br>
 
 **Projet de développement web**  
-**Année de formation :** ____________________
+**Année de formation :** 2027_2026
 
 ---
 
@@ -27,21 +27,43 @@ L’interface est réalisée en HTML et JavaScript. Elle communique avec une API
 
 ## Sommaire
 
-- [1. Introduction générale](#introduction-generale)
-- [2. Présentation du projet](#presentation-du-projet)
-- [3. Besoins et fonctionnalités](#besoins-et-fonctionnalites)
-- [4. Méthodologie de conception](#methodologie-de-conception)
-- [5. Choix technologiques](#choix-technologiques)
-- [6. Architecture du système](#architecture-du-systeme)
-- [7. Modèle de données](#modele-de-donnees)
-- [8. Fonctionnement des opérations CRUD](#fonctionnement-des-operations-crud)
-- [9. Interface et expérience utilisateur](#interface-et-experience-utilisateur)
-- [10. Vérification et tests](#verification-et-tests)
-- [11. Installation et utilisation](#installation-et-utilisation)
-- [12. Limites et améliorations possibles](#limites-et-ameliorations-possibles)
-- [13. Conclusion générale](#conclusion-generale)
-- [Glossaire](#glossaire)
-- [Références](#references)
+- [RAPPORT DE PROJET](#rapport-de-projet)
+  - [Réseau Pro](#réseau-pro)
+    - [Application web de gestion de publications — CRUD](#application-web-de-gestion-de-publications--crud)
+  - [Résumé](#résumé)
+  - [Sommaire](#sommaire)
+  - [1. Introduction générale](#1-introduction-générale)
+  - [2. Présentation du projet](#2-présentation-du-projet)
+    - [2.1 Contexte](#21-contexte)
+    - [2.2 Objectifs](#22-objectifs)
+    - [2.3 Périmètre](#23-périmètre)
+  - [3. Besoins et fonctionnalités](#3-besoins-et-fonctionnalités)
+    - [3.1 Besoin principal](#31-besoin-principal)
+    - [3.2 Fonctionnalités](#32-fonctionnalités)
+    - [3.3 Contraintes fonctionnelles constatées](#33-contraintes-fonctionnelles-constatées)
+  - [4. Méthodologie de conception](#4-méthodologie-de-conception)
+    - [4.1 Repère 2TUP](#41-repère-2tup)
+    - [4.2 Repère Design Thinking](#42-repère-design-thinking)
+  - [5. Choix technologiques](#5-choix-technologiques)
+  - [6. Architecture du système](#6-architecture-du-système)
+    - [6.1 Organisation en couches](#61-organisation-en-couches)
+    - [6.2 Schéma des échanges](#62-schéma-des-échanges)
+    - [6.3 Rôle des fichiers principaux](#63-rôle-des-fichiers-principaux)
+  - [7. Modèle de données](#7-modèle-de-données)
+  - [8. Fonctionnement des opérations CRUD](#8-fonctionnement-des-opérations-crud)
+    - [8.1 Exemple du parcours d’une création](#81-exemple-du-parcours-dune-création)
+  - [9. Interface et expérience utilisateur](#9-interface-et-expérience-utilisateur)
+  - [10. Vérification et tests](#10-vérification-et-tests)
+  - [11. Installation et utilisation](#11-installation-et-utilisation)
+    - [11.1 Prérequis](#111-prérequis)
+    - [11.2 Démarrage local](#112-démarrage-local)
+    - [11.3 Utilisation](#113-utilisation)
+  - [12. Limites et améliorations possibles](#12-limites-et-améliorations-possibles)
+    - [12.1 Limites actuelles](#121-limites-actuelles)
+    - [12.2 Évolutions envisageables](#122-évolutions-envisageables)
+  - [13. Conclusion générale](#13-conclusion-générale)
+  - [Glossaire](#glossaire)
+  - [Références](#références)
 
 ---
 
