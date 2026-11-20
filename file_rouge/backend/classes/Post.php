@@ -7,7 +7,8 @@ class Post
         private string $author,
         private string $role,
         private string $content,
-        private string $createdAt
+        private string $createdAt,
+        private ?int $userId = null
     ) {
     }
 
@@ -34,5 +35,10 @@ class Post
     public function getCreatedAt(): string
     {
         return $this->createdAt;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->userId;
     }
 }

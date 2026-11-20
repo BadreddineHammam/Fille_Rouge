@@ -12,7 +12,7 @@ class PostService extends BaseService
         $this->postDAO = new PostDAO($dataFile);
     }
 
-    public function listPosts(): array
+    public function listPosts(int $userId, bool $isAdmin): array
     {
         $data = [];
         $posts = $this->postDAO->getAll();
@@ -22,13 +22,15 @@ class PostService extends BaseService
         });
 
         foreach ($posts as $post) {
-            $data[] = $this->postToArray($post);
+            if ($isAdmin || $post->getUserId() === $userId) {
+                $data[] = $this->postToArray($post);
+            }
         }
 
         return $data;
     }
 
-    public function createPost(string $author, string $role, string $content): array
+    public function createPost(string $author, string $role, string $content, int $userId): array
     {
         $author = $this->validateText($author, "Le nom");
         $role = $this->validateText($role, "Le métier");
@@ -37,11 +39,17 @@ class PostService extends BaseService
         $this->validateLength($role, 100, "Le métier");
         $this->validateLength($content, 1000, "La publication");
 
-        return $this->postToArray($this->postDAO->create($author, $role, $content));
+        return $this->postToArray($this->postDAO->create($author, $role, $content, $userId));
     }
 
-    public function updatePost(int $id, string $author, string $role, string $content): array
-    {
+    public function updatePost(
+        int $id,
+        string $author,
+        string $role,
+        string $content,
+        int $userId,
+        bool $isAdmin
+    ): array {
         $this->validateId($id);
         $author = $this->validateText($author, "Le nom");
         $role = $this->validateText($role, "Le métier");
@@ -50,6 +58,7 @@ class PostService extends BaseService
         $this->validateLength($role, 100, "Le métier");
         $this->validateLength($content, 1000, "La publication");
 
+        $this->checkPostAccess($id, $userId, $isAdmin);
         $post = $this->postDAO->update($id, $author, $role, $content);
 
         if ($post === null) {
@@ -59,13 +68,29 @@ class PostService extends BaseService
         return $this->postToArray($post);
     }
 
-    public function deletePost(int $id): void
+    public function deletePost(int $id, int $userId, bool $isAdmin): void
     {
         $this->validateId($id);
+        $this->checkPostAccess($id, $userId, $isAdmin);
 
         if (!$this->postDAO->delete($id)) {
             throw new OutOfBoundsException("Cette publication n'existe pas.");
         }
+    }
+
+    private function checkPostAccess(int $id, int $userId, bool $isAdmin): void
+    {
+        foreach ($this->postDAO->getAll() as $post) {
+            if ($post->getId() === $id) {
+                if (!$isAdmin && $post->getUserId() !== $userId) {
+                    throw new OutOfBoundsException("Cette publication n'existe pas.");
+                }
+
+                return;
+            }
+        }
+
+        throw new OutOfBoundsException("Cette publication n'existe pas.");
     }
 
     private function validateText(string $value, string $field): string
@@ -101,6 +126,7 @@ class PostService extends BaseService
             "role" => $post->getRole(),
             "content" => $post->getContent(),
             "createdAt" => $post->getCreatedAt(),
+            "userId" => $post->getUserId(),
         ];
     }
 }
