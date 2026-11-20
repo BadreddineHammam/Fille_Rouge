@@ -1,0 +1,43 @@
+flowchart LR
+    subgraph client["Client"]
+        ui["frontend/index.html<br/>Interface du fil et des formulaires"]
+        app["frontend/assets/js/app.js<br/>fetch, affichage et CRUD"]
+        ui -->|"charge"| app
+    end
+
+    subgraph server["Serveur PHP"]
+        router["backend/router.php<br/>sert les fichiers du site<br/>bloque l'accès direct à /backend/data"]
+        authApi["backend/api/auth.php<br/>inscription, connexion, déconnexion"]
+        postsApi["backend/api/posts.php<br/>lecture et CRUD des publications"]
+        session["Session PHP<br/>userId, rôle et jeton CSRF"]
+        authService["AuthService"]
+        postService["PostService<br/>validation et contrôle propriétaire"]
+        userDao["UserDAO"]
+        postDao["PostDAO"]
+    end
+
+    subgraph storage["Stockage JSON local"]
+        users[("backend/data/users.json<br/>comptes et empreintes de mots de passe")]
+        posts[("backend/data/posts.json<br/>publications")]
+    end
+
+    subgraph adminTool["Création initiale de l'administrateur"]
+        cli["backend/scripts/create_admin.php<br/>CLI"]
+    end
+
+    router -->|"sert HTML / JavaScript"| ui
+    app -->|"GET / POST auth.php"| authApi
+    app -->|"GET / POST / PUT / DELETE posts.php<br/>jeton CSRF pour les écritures"| postsApi
+
+    authApi <-->|"session et jeton CSRF"| session
+    postsApi <-->|"identité, rôle et vérification CSRF"| session
+
+    authApi --> authService
+    authService --> userDao
+    userDao <-->|"lecture / écriture"| users
+
+    postsApi --> postService
+    postService -->|"vérifie l'accès selon userId / rôle"| postDao
+    postDao <-->|"lecture / écriture"| posts
+
+    cli -->|"crée le compte admin"| authService

@@ -1,0 +1,54 @@
+%% L'administrateur initial est provisionné par une commande CLI, hors du site.
+usecase-beta
+direction LR
+
+actor Visiteur("Visiteur")
+actor Utilisateur("Utilisateur connecté")
+actor Administrateur("Administrateur")
+
+systemBoundary ReseauPro("Réseau social professionnel")
+    CreerCompte("Créer un compte")
+    SeConnecter("Se connecter")
+    SeDeconnecter("Se déconnecter")
+
+    CreerPublication("Créer une publication")
+    ConsulterSesPublications("Consulter ses publications")
+    ModifierSesPublications("Modifier ses propres publications")
+    SupprimerSesPublications("Supprimer ses propres publications")
+
+    ConsulterToutesPublications("Consulter toutes les publications")
+    ModifierToutesPublications("Modifier toutes les publications")
+    SupprimerToutesPublications("Supprimer toutes les publications")
+
+    SaisirInformations("Saisir les informations de la publication")
+    ValiderInformations("Valider les champs obligatoires et les longueurs")
+    SelectionnerPublication("Sélectionner une publication")
+    ConfirmerSuppression("Confirmer la suppression")
+end
+
+Visiteur --> CreerCompte
+Visiteur --> SeConnecter
+
+Utilisateur --> SeDeconnecter
+Utilisateur --> CreerPublication
+Utilisateur --> ConsulterSesPublications
+Utilisateur --> ModifierSesPublications
+Utilisateur --> SupprimerSesPublications
+
+Administrateur --|> Utilisateur
+Administrateur --> ConsulterToutesPublications
+Administrateur --> ModifierToutesPublications
+Administrateur --> SupprimerToutesPublications
+
+CreerPublication ..> : include SaisirInformations
+CreerPublication ..> : include ValiderInformations
+ModifierSesPublications ..> : include SelectionnerPublication
+ModifierSesPublications ..> : include SaisirInformations
+ModifierSesPublications ..> : include ValiderInformations
+ModifierToutesPublications ..> : include SelectionnerPublication
+ModifierToutesPublications ..> : include SaisirInformations
+ModifierToutesPublications ..> : include ValiderInformations
+SupprimerSesPublications ..> : include SelectionnerPublication
+SupprimerSesPublications ..> : include ConfirmerSuppression
+SupprimerToutesPublications ..> : include SelectionnerPublication
+SupprimerToutesPublications ..> : include ConfirmerSuppression
