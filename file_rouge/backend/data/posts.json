@@ -4,20 +4,39 @@
         "author": "Amine Benali",
         "role": "Développeur web junior",
         "content": "Je découvre les API PHP et je viens de terminer mon premier exercice de gestion de données JSON.",
-        "createdAt": "2026-11-12T09:30:00+00:00"
-    },
-    {
-        "id": 2,
-        "author": "Sara El Mansouri",
-        "role": "Étudiante en développement",
-        "content": "Cette semaine, je travaille sur les opérations CRUD : créer, lire, modifier et supprimer des publications.",
-        "createdAt": "2026-11-12T08:15:00+00:00"
+        "createdAt": "2026-11-12T09:30:00+00:00",
+        "userId": null
     },
     {
         "id": 3,
         "author": "Youssef Karim",
         "role": "Formateur numérique",
         "content": "Un petit projet bien découpé est une bonne manière d'apprendre comment le navigateur communique avec PHP.",
-        "createdAt": "2026-11-11T16:45:00+00:00"
+        "createdAt": "2026-11-11T16:45:00+00:00",
+        "userId": null
+    },
+    {
+        "id": 4,
+        "author": "badr",
+        "role": "ingenieur",
+        "content": "je travaile a une project de construire une grand project a une entreprise multi national",
+        "createdAt": "2026-11-18T09:37:30+00:00",
+        "userId": null
+    },
+    {
+        "id": 5,
+        "author": "badr",
+        "role": "ingenieur",
+        "content": "i am here",
+        "createdAt": "2026-11-18T12:17:01+00:00",
+        "userId": 1
+    },
+    {
+        "id": 6,
+        "author": "badr",
+        "role": "ingenieur",
+        "content": "i am here",
+        "createdAt": "2026-11-18T12:17:22+00:00",
+        "userId": 1
     }
 ]

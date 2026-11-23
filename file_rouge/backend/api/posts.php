@@ -1,8 +1,19 @@
 <?php
 
 require_once __DIR__ . "/../services/PostService.php";
+require_once __DIR__ . "/../services/Session.php";
 
 header("Content-Type: application/json; charset=utf-8");
+startAppSession();
+
+if (!isset($_SESSION["userId"], $_SESSION["role"])) {
+    http_response_code(401);
+    echo json_encode(["success" => false, "message" => "Connectez-vous pour accéder aux publications."], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+$userId = (int) $_SESSION["userId"];
+$isAdmin = $_SESSION["role"] === "admin";
 
 function readRequestData(string $method): array
 {
@@ -43,14 +54,21 @@ $service = new PostService(__DIR__ . "/../data/posts.json");
 $method = $_SERVER["REQUEST_METHOD"] ?? "GET";
 
 try {
+    if ($method !== "GET" && !hasValidCsrfToken()) {
+        http_response_code(403);
+        echo json_encode(["success" => false, "message" => "La session a expiré. Actualisez la page et réessayez."], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
     if ($method === "GET") {
-        echo json_encode($service->listPosts(), JSON_UNESCAPED_UNICODE);
+        echo json_encode($service->listPosts($userId, $isAdmin), JSON_UNESCAPED_UNICODE);
     } elseif ($method === "POST") {
         $input = readRequestData($method);
         $post = $service->createPost(
             readText($input, "author"),
             readText($input, "role"),
-            readText($input, "content")
+            readText($input, "content"),
+            $userId
         );
 
         echo json_encode([
@@ -64,7 +82,9 @@ try {
             readPostId($input),
             readText($input, "author"),
             readText($input, "role"),
-            readText($input, "content")
+            readText($input, "content"),
+            $userId,
+            $isAdmin
         );
 
         echo json_encode([
@@ -74,7 +94,7 @@ try {
         ], JSON_UNESCAPED_UNICODE);
     } elseif ($method === "DELETE") {
         $input = readRequestData($method);
-        $service->deletePost(readPostId($input));
+        $service->deletePost(readPostId($input), $userId, $isAdmin);
 
         echo json_encode([
             "success" => true,

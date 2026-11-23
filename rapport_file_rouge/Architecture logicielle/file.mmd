@@ -1,0 +1,80 @@
+---
+title: Diagramme de classes - file_rouge
+---
+classDiagram
+    direction LR
+
+    class Post {
+        -int id
+        -string author
+        -string role
+        -string content
+        -string createdAt
+        -?int userId
+        +__construct(int id, string author, string role, string content, string createdAt, ?int userId)
+        +getId() int
+        +getAuthor() string
+        +getRole() string
+        +getContent() string
+        +getCreatedAt() string
+        +getUserId() ?int
+    }
+
+    class PostDAO {
+        -string dataFile
+        +__construct(string dataFile)
+        +getAll() array
+        +create(string author, string role, string content, int userId) Post
+        +update(int id, string author, string role, string content) ?Post
+        +delete(int id) bool
+        -saveAll(array posts) void
+    }
+
+    class UserDAO {
+        -string dataFile
+        +__construct(string dataFile)
+        +getAll() array
+        +findByEmail(string email) ?array
+        +findById(int id) ?array
+        +create(string name, string email, string passwordHash, string role) array
+        -saveAll(array users) void
+    }
+
+    class AuthService {
+        -UserDAO userDAO
+        +__construct(string dataFile)
+        +register(string name, string email, string password) array
+        +createAdmin(string name, string email, string password) array
+        +login(string email, string password) array
+        +findUserById(int id) ?array
+        -createAccount(string name, string email, string password, string role) array
+        -userToArray(array user) array
+    }
+
+    class BaseService {
+        <<abstract>>
+    }
+
+    class PostService {
+        -PostDAO postDAO
+        +__construct(string dataFile)
+        +listPosts(int userId, bool isAdmin) array
+        +createPost(string author, string role, string content, int userId) array
+        +updatePost(int id, string author, string role, string content, int userId, bool isAdmin) array
+        +deletePost(int id, int userId, bool isAdmin) void
+        -checkPostAccess(int id, int userId, bool isAdmin) void
+        -validateText(string value, string field) string
+        -validateLength(string value, int maximum, string field) void
+        -validateId(int id) void
+        -postToArray(Post post) array
+    }
+
+    BaseService <|-- PostService
+    AuthService --> UserDAO : uses
+    PostService --> PostDAO : uses
+    PostDAO "1" --> "0..*" Post : hydrates and persists
+    PostService ..> Post : uses
+
+    note "User records are associative arrays; there is no User class."
+    note for Post "userId may be null for legacy posts."
+    note for AuthService "Session and auth API logic are procedural, not classes."

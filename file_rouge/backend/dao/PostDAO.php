@@ -33,6 +33,7 @@ class PostDAO
                 || !is_string($item["role"])
                 || !is_string($item["content"])
                 || !is_string($item["createdAt"])
+                || (isset($item["userId"]) && !is_int($item["userId"]))
             ) {
                 throw new RuntimeException("Une publication contient des données invalides.");
             }
@@ -42,14 +43,15 @@ class PostDAO
                 $item["author"],
                 $item["role"],
                 $item["content"],
-                $item["createdAt"]
+                $item["createdAt"],
+                $item["userId"] ?? null
             );
         }
 
         return $posts;
     }
 
-    public function create(string $author, string $role, string $content): Post
+    public function create(string $author, string $role, string $content, int $userId): Post
     {
         $posts = $this->getAll();
         $ids = [];
@@ -63,7 +65,8 @@ class PostDAO
             $author,
             $role,
             $content,
-            date(DATE_ATOM)
+            date(DATE_ATOM),
+            $userId
         );
         $posts[] = $newPost;
 
@@ -85,7 +88,8 @@ class PostDAO
                     $author,
                     $role,
                     $content,
-                    $post->getCreatedAt()
+                    $post->getCreatedAt(),
+                    $post->getUserId()
                 );
                 $updatedPost = $post;
             }
@@ -133,6 +137,7 @@ class PostDAO
                 "role" => $post->getRole(),
                 "content" => $post->getContent(),
                 "createdAt" => $post->getCreatedAt(),
+                "userId" => $post->getUserId(),
             ];
         }
 
